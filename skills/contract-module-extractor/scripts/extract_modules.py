@@ -416,14 +416,26 @@ def main():
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
     if len(sys.argv) < 2:
-        print("Usage: python extract_modules.py <contract_file.txt>")
+        print("Usage: python extract_modules.py <contract_file.txt> [output_file.json]")
+        print("  contract_file.txt: Input contract text file")
+        print("  output_file.json:  Optional output JSON file (if not specified, prints to stdout)")
         sys.exit(1)
 
-    with open(sys.argv[1], 'r', encoding='utf-8') as f:
+    input_file = sys.argv[1]
+    output_file = sys.argv[2] if len(sys.argv) > 2 else None
+
+    with open(input_file, 'r', encoding='utf-8') as f:
         text = f.read()
 
     modules = extract_modules(text)
-    print(json.dumps(modules, ensure_ascii=False, indent=2))
+    result = json.dumps(modules, ensure_ascii=False, indent=2)
+
+    if output_file:
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(result)
+        print(f"Modules extracted to {output_file}")
+    else:
+        print(result)
 
 
 if __name__ == '__main__':

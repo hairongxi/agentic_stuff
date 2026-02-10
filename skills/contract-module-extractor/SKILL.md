@@ -40,3 +40,66 @@ Load reference patterns when analyzing non-standard contracts.
 - `references/examples.md`: Example contract structures for reference
 
 Load these files when encountering ambiguous module boundaries or unusual contract formats.
+
+## Usage Examples
+
+### Command Line
+
+```bash
+# Extract modules and print JSON to stdout
+python scripts/extract_modules.py contract-plaintext.txt
+
+# Extract modules and save to JSON file
+python scripts/extract_modules.py contract-plaintext.txt contract-modules.json
+```
+
+### Python API
+
+```python
+from scripts.extract_modules import extract_modules
+import json
+
+# Read contract text
+with open('contract-plaintext.txt', 'r', encoding='utf-8') as f:
+    text = f.read()
+
+# Extract modules
+modules = extract_modules(text)
+
+# Save to JSON file
+with open('contract-modules.json', 'w', encoding='utf-8') as f:
+    json.dump(modules, f, ensure_ascii=False, indent=2)
+```
+
+### Output Format
+
+The output is a JSON array of modules with the following structure:
+
+```json
+[
+  {
+    "type": "封面",
+    "text": "合同内容..."
+  },
+  {
+    "type": "目录",
+    "text": "目录内容..."
+  },
+  {
+    "type": "序言",
+    "text": "鉴于..."
+  },
+  {
+    "type": "正文",
+    "text": "正文内容..."
+  },
+  {
+    "type": "盖章签字",
+    "text": "签字内容..."
+  },
+  {
+    "type": "附件",
+    "text": "附件内容..."
+  }
+]
+```
